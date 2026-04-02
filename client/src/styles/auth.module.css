@@ -1,0 +1,145 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #fafafa;
+  gap: 32px;
+}
+
+/* LEFT SIDE */
+.left img {
+  height: 620px;
+}
+
+/* RIGHT SIDE */
+.right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* MAIN CARD */
+.box {
+  width: 350px;
+  background: #ffffff;
+  border: 1px solid #dbdbdb;
+  padding: 40px 40px 20px;
+  text-align: center;
+}
+
+/* LOGO */
+.logo {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* FORM */
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* INPUT */
+.form input {
+  width: 100%;
+  padding: 9px;
+  margin-bottom: 6px;
+  border: 1px solid #dbdbdb;
+  border-radius: 3px;
+  background: #fafafa;
+  font-size: 12px;
+}
+.form button {
+  width: 106%;
+  height: 40px;
+  margin-top: 12px;
+
+  background: #4cb5f9;
+  color: white;
+
+  border: none;
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+/* DIVIDER */
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 18px 0;
+}
+
+.divider span {
+  flex: 1;
+  height: 1px;
+  background: #dbdbdb;
+}
+
+.divider p {
+  margin: 0 12px;
+  color: #8e8e8e;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* LINK */
+.link {
+  color: #00376b;
+  font-size: 12px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* BOTTOM BOX */
+.bottomBox {
+  width: 350px;
+  margin-top: 10px;
+  padding: 20px;
+  border: 1px solid #dbdbdb;
+  text-align: center;
+  background: white;
+  font-size: 14px;
+}
+
+.bottomBox a {
+  color: #0095f6;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.bottomBox a:hover {
+  text-decoration: underline;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .left {
+    display: none;
+  }
+}
+
+/* SUBTITLE */
+.subtitle {
+  font-size: 14px;
+  color: #737373;
+  margin-bottom: 20px;
+}
+
+/* TERMS TEXT */
+.terms {
+  font-size: 12px;
+  color: #737373;
+  margin-top: 15px;
+  line-height: 1.4;
+}
