@@ -1,0 +1,46 @@
+.container {
+  display: flex;
+  justify-content: center;
+  padding: 40px;
+}
+
+.feed {
+  width: 500px;
+}
+
+.post {
+  border: 1px solid #dbdbdb;
+  margin-bottom: 20px;
+  background: white;
+  border-radius: 8px;
+}
+
+/* header */
+.header {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* image */
+.image {
+  width: 100%;
+}
+
+/* actions */
+.actions {
+  padding: 10px;
+  font-size: 20px;
+}
+
+/* caption */
+.caption {
+  padding: 0 10px 10px;
+}
