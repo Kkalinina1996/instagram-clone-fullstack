@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import API from "../../api/axios";
 import styles from "./login.module.css";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -26,12 +28,11 @@ const Login = () => {
 
       localStorage.setItem("token", res.data.token);
 
-      navigate("/"); // редирект на главную
-    } catch (err) {
-      console.error(err);
-      alert("Login error");
-    }
-  };
+      navigate("/profile"); 
+  } catch (err) {
+    alert(err.response?.data?.message);
+  }
+};
 
   return (
     <div className={styles.container}>
@@ -48,20 +49,35 @@ const Login = () => {
 
           {/* FORM */}
           <form className={styles.form} onSubmit={handleLogin}>
-            <input
-              name="email"
-              placeholder="Email"
-              onChange={handleChange}
-            />
+           
 
-            <input
-              name="password"
-              type="password"
-              placeholder="Password"
-              onChange={handleChange}
-            />
+<TextField
+  label="Email"
+  name="email"
+  fullWidth
+  margin="normal"
+  onChange={handleChange}
+/>
 
-            <button type="submit">Log in</button>
+<TextField
+  label="Password"
+  type="password"
+  name="password"
+  fullWidth
+  margin="normal"
+  onChange={handleChange}
+/>
+
+           
+
+<Button
+  type="submit"
+  variant="contained"
+  fullWidth
+  sx={{ mt: 2 }}
+>
+  Log in
+</Button>
           </form>
 
           {/* DIVIDER */}

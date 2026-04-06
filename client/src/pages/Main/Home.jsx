@@ -38,7 +38,7 @@ useEffect(() => {
 
             {/* actions */}
             <div className={styles.actions}>
-              ❤️ 🤍 💬
+             
             </div>
 
             {/* caption */}

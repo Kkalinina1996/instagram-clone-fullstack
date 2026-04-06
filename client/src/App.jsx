@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
-import Home from "./pages/Main/Home";
 import Reset from "./pages/Auth/reset";
-
+import Profile from "./pages/Profile/profile";
+import Home from "./pages/Main/Home";
 
 const App = () => {
   const isAuth = !!localStorage.getItem("token");
@@ -11,17 +11,45 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* PUBLIC */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/reset" element={<Reset />} />
 
+        {/* 🔥 ГЛАВНАЯ = LOGIN */}
+        <Route
+          path="/"
+          element={!isAuth ? <Login /> : <Navigate to="/home" />}
+        />
+
+        {/* LOGIN */}
+        <Route
+          path="/login"
+          element={!isAuth ? <Login /> : <Navigate to="/profile" />}
+        />
+
+        {/* REGISTER */}
+        <Route
+          path="/register"
+          element={!isAuth ? <Register /> : <Navigate to="/profile" />}
+        />
+
+        {/* RESET */}
+        <Route path="/reset" element={<Reset />} />
 
         {/* PRIVATE */}
         <Route
-          path="/"
-          element={isAuth ? <Home /> : <Navigate to="/login" />}
+          path="/home"
+          element={isAuth ? <Login /> : <Navigate to="/" />}
         />
+
+        <Route
+          path="/profile"
+          element={isAuth ? <Profile /> : <Navigate to="/" />}
+        />
+
+        {/* fallback */}
+        <Route
+          path="*"
+          element={<Navigate to={isAuth ? "/home" : "/"} />}
+        />
+
       </Routes>
     </BrowserRouter>
   );
