@@ -1,10 +1,17 @@
+import { Outlet } from "react-router-dom";
 import Sidebar from "../Sidebar/sidebar";
+import styles from "./styles.module.css";
 
-export default function MainLayout({ children }) {
+const MainLayout = () => {
   return (
-    <div style={{ display: "flex" }}>
+    <div className={styles.container}>
       <Sidebar />
-      <div style={{ flex: 1 }}>{children}</div>
+
+      <main className={styles.content}>
+        <Outlet />
+      </main>
     </div>
   );
-}
+};
+
+export default MainLayout;

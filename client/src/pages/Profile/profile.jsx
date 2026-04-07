@@ -3,6 +3,7 @@ import API from "../../api/axios";
 import styles from "./profile.module.css";
 import Button from "@mui/material/Button";
 
+
 const Profile = () => {
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState(null);
@@ -23,39 +24,40 @@ const Profile = () => {
     fetchData();
   }, []);
 
+  if (!user) return <p>Loading...</p>;
+
   return (
     <div className={styles.container}>
       
-      <div className={styles.content}>
-        
-        {/* HEADER */}
-        <div className={styles.header}>
-          
-          {/* AVATAR */}
-          <div className={styles.avatar}>
-            <img
-  src={
-    user?.avatar
-      ? `http://127.0.0.1:3333${user.avatar}`
-      : "/avatar.png"
-  }
-  alt="avatar"
-/>
-          </div>
+      {/* HEADER */}
+      <div className={styles.header}>
+        <img
+          src={user.avatar || "/avatar.png"}
+          className={styles.avatar}
+        />
 
-          {/* INFO */}
-          <div className={styles.userInfo}>
-            
-            <div className={styles.topRow}>
-              <span className={styles.username}>
-                {user?.username}
-              </span>
-              
+        <div className={styles.info}>
+         <div className={styles.topRow}>
+  <h2>{user.username}</h2>
 
-<Button variant="outlined" size="small">
-  Edit profile
-</Button>
-            </div>
+  <div className={styles.buttons}>
+    <Button variant="outlined" size="small">
+      Edit Profile
+    </Button>
+
+    <Button
+      variant="contained"
+      size="small"
+      color="error"
+      onClick={() => {
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+      }}
+    >
+      Logout
+    </Button>
+  </div>
+</div>
 
             <div className={styles.stats}>
               <span><b>{posts.length}</b> posts</span>
@@ -68,6 +70,9 @@ const Profile = () => {
             </div>
 
           </div>
+
+          <p className={styles.name}>{user.fullName}</p>
+          <p className={styles.bio}>{user.bio}</p>
         </div>
 
         {/* POSTS GRID */}
@@ -86,7 +91,11 @@ const Profile = () => {
   ))}
 </div>
 
+      {/* GRID POSTS */}
+      <div className={styles.grid}>
+        {/* пока пусто */}
       </div>
+
     </div>
   );
 };

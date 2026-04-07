@@ -1,0 +1,9 @@
+.container {
+  display: flex;
+}
+
+.content {
+  margin-left: 250px; /* ширина sidebar */
+  padding: 30px;
+  width: 100%;
+}
