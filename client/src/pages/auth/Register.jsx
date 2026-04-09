@@ -64,7 +64,7 @@ const Register = () => {
       return;
     }
 
-    const cleanForm = {
+    const Form = {
       email: form.email.trim(),
       fullName: form.fullName.trim(),
       username: form.username.trim(),
@@ -72,7 +72,7 @@ const Register = () => {
     };
 
     try {
-      const res = await API.post("/auth/register", cleanForm);
+      const res = await API.post("/api/auth/register", form);
 
       localStorage.setItem("token", res.data.token);
 

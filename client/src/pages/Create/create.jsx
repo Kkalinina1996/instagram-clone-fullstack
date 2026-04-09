@@ -1,4 +1,5 @@
-import { useState } from "react";
+ import { useState } from "react";
+import { useNavigate } from "react-router-dom"; // 🔥 ДОБАВИТЬ
 import API from "../../api/axios";
 import styles from "./create.module.css";
 
@@ -6,6 +7,9 @@ const Create = ({ onClose }) => {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [caption, setCaption] = useState("");
+  const [loading, setLoading] = useState(false); // 🔥 ДОБАВИТЬ
+
+  const navigate = useNavigate(); // 🔥 ДОБАВИТЬ
 
   const handleChange = (e) => {
     const selected = e.target.files[0];
@@ -23,15 +27,25 @@ const Create = ({ onClose }) => {
   const handleSubmit = async () => {
     if (!file) return alert("Select image");
 
-    const formData = new FormData();
-    formData.append("image", file);
-    formData.append("caption", caption);
-
     try {
-      await API.post("/post", formData);
-      onClose();
+      setLoading(true);
+
+      const formData = new FormData();
+      formData.append("image", file);
+      formData.append("caption", caption);
+
+      await API.post("/api/posts", formData);
+
+      // 🔥 если modal — закрываем
+      if (onClose) onClose();
+
+      // 🔥 переход
+      navigate("/profile");
+
     } catch (err) {
-      console.log(err);
+      console.log(err.response?.data || err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -46,9 +60,9 @@ const Create = ({ onClose }) => {
           <button
             className={styles.shareBtn}
             onClick={handleSubmit}
-            disabled={!file}
+            disabled={!file || loading}
           >
-            Share
+            {loading ? "Sharing..." : "Share"}
           </button>
         </div>
 
@@ -62,17 +76,11 @@ const Create = ({ onClose }) => {
                 <img src={preview} alt="preview" />
 
                 <div className={styles.actions}>
-                  {/* CHANGE */}
                   <label className={styles.changeBtn}>
                     Change
-                    <input
-                      type="file"
-                      onChange={handleChange}
-                      hidden
-                    />
+                    <input type="file" onChange={handleChange} hidden />
                   </label>
 
-                  {/* REMOVE */}
                   <button type="button" onClick={handleRemove}>
                     Remove
                   </button>

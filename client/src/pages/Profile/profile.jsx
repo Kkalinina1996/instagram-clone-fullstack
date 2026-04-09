@@ -6,19 +6,24 @@ import Button from "@mui/material/Button";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
+  const [posts, setPosts] = useState([]);
   const navigate = useNavigate();
 
+  // 🔥 загрузка данных
   useEffect(() => {
-    const getProfile = async () => {
+    const fetchData = async () => {
       try {
-        const res = await API.get("/api/users/me");
-        setUser(res.data);
+        const userRes = await API.get("/api/users/me");
+        setUser(userRes.data);
+
+        const postsRes = await API.get("/api/posts");
+        setPosts(postsRes.data);
       } catch (err) {
-        console.log("PROFILE ERROR:", err);
+        console.log(err);
       }
     };
 
-    getProfile();
+    fetchData();
   }, []);
 
   // 🔥 logout
@@ -27,7 +32,27 @@ const Profile = () => {
     navigate("/login");
   };
 
+  // 🔥 delete post
+  const deletePost = async (id) => {
+    try {
+      await API.delete(`/api/posts/${id}`);
+      setPosts(posts.filter((p) => p._id !== id));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   if (!user) return <p>Loading...</p>;
+
+  // 🔥 только свои посты
+  const userPosts = posts.filter((post) => {
+    const authorId =
+      typeof post.author === "object"
+        ? post.author._id
+        : post.author;
+
+    return authorId === user._id;
+  });
 
   return (
     <div className={styles.container}>
@@ -51,11 +76,15 @@ const Profile = () => {
         {/* INFO */}
         <div className={styles.info}>
           
-          {/* TOP ROW */}
+          {/* TOP */}
           <div className={styles.topRow}>
             <h2>{user.username}</h2>
 
-            <Button variant="outlined" size="small">
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => navigate("/edit-profile")}
+            >
               Edit profile
             </Button>
 
@@ -71,7 +100,7 @@ const Profile = () => {
 
           {/* STATS */}
           <div className={styles.stats}>
-            <span><b>0</b> posts</span>
+            <span><b>{userPosts.length}</b> posts</span>
             <span><b>{user.followers?.length || 0}</b> followers</span>
             <span><b>{user.following?.length || 0}</b> following</span>
           </div>
@@ -85,9 +114,25 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* POSTS GRID */}
+      {/* 🔥 POSTS GRID */}
       <div className={styles.grid}>
-        {/* пока пусто — позже добавим посты */}
+        {userPosts.map((post) => (
+          <div key={post._id} className={styles.post}>
+            
+            <img
+              src={`http://127.0.0.1:3333${post.image}`}
+              alt="post"
+            />
+
+            <button
+              className={styles.deleteBtn}
+              onClick={() => deletePost(post._id)}
+            >
+              Delete
+            </button>
+
+          </div>
+        ))}
       </div>
 
     </div>

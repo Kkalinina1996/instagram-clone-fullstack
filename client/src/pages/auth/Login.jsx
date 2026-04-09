@@ -13,6 +13,8 @@ const Login = () => {
     password: "",
   });
 
+  const [error, setError] = useState("");
+
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -21,64 +23,74 @@ const Login = () => {
   };
 
   const handleLogin = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
+    setError(""); // 🔥 сброс ошибки
 
-  try {
-    const res = await API.post("/auth/login", form);
+    try {
+      const res = await API.post("api/auth/login", form);
 
-    localStorage.setItem("token", res.data.token);
+      // 🔥 сохраняем токен
+      localStorage.setItem("token", res.data.token);
 
-    window.location.href = "/profile"; 
+      // 🔥 переход без перезагрузки
+      navigate("/profile");
 
-  } catch (err) {
-    alert(err.response?.data?.message);
-  }
-};
+    } catch (err) {
+      console.log(err);
+
+      setError(
+        err.response?.data?.message || "Invalid email or password"
+      );
+    }
+  };
 
   return (
     <div className={styles.container}>
-      {/* LEFT SIDE */}
+      
+      {/* LEFT */}
       <div className={styles.left}>
         <img src="/phone.png" alt="phone" />
       </div>
 
-      {/* RIGHT SIDE */}
+      {/* RIGHT */}
       <div className={styles.right}>
+        
         <div className={styles.card}>
+          
           {/* LOGO */}
           <img src="/ICHGRA 2.png" className={styles.logo} />
 
           {/* FORM */}
           <form className={styles.form} onSubmit={handleLogin}>
-           
+            
+            <TextField
+              label="Email"
+              name="email"
+              fullWidth
+              margin="normal"
+              onChange={handleChange}
+            />
 
-<TextField
-  label="Email"
-  name="email"
-  fullWidth
-  margin="normal"
-  onChange={handleChange}
-/>
+            <TextField
+              label="Password"
+              type="password"
+              name="password"
+              fullWidth
+              margin="normal"
+              onChange={handleChange}
+            />
 
-<TextField
-  label="Password"
-  type="password"
-  name="password"
-  fullWidth
-  margin="normal"
-  onChange={handleChange}
-/>
+            {/* 🔥 ERROR */}
+            {error && <p className={styles.error}>{error}</p>}
 
-           
-
-<Button
-  type="submit"
-  variant="contained"
-  fullWidth
-  sx={{ mt: 2 }}
->
-  Log in
-</Button>
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              sx={{ mt: 2 }}
+            >
+              Log in
+            </Button>
           </form>
 
           {/* DIVIDER */}
@@ -86,7 +98,7 @@ const Login = () => {
             <span>OR</span>
           </div>
 
-          {/* FORGOT PASSWORD */}
+          {/* FORGOT */}
           <Link to="/reset" className={styles.forgot}>
             Forgot password?
           </Link>
@@ -99,6 +111,7 @@ const Login = () => {
             Sign up
           </span>
         </div>
+
       </div>
     </div>
   );

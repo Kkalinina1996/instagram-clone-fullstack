@@ -1,61 +1,4 @@
-// import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-// import Login from "./pages/Auth/Login";
-// import Register from "./pages/Auth/Register";
-// import Reset from "./pages/Auth/reset";
-// import Profile from "./pages/Profile/profile";
-// import Home from "./pages/Main/Home";
 
-// const App = () => {
-//   const isAuth = !!localStorage.getItem("token");
-
-//   return (
-//     <BrowserRouter>
-//       <Routes>
-
-//         {/* 🔥 ГЛАВНАЯ = LOGIN */}
-//         <Route
-//           path="/"
-//           element={!isAuth ? <Login /> : <Navigate to="/home" />}
-//         />
-
-//         {/* LOGIN */}
-//         <Route
-//           path="/login"
-//           element={!isAuth ? <Login /> : <Navigate to="/profile" />}
-//         />
-
-//         {/* REGISTER */}
-//         <Route
-//           path="/register"
-//           element={!isAuth ? <Register /> : <Navigate to="/profile" />}
-//         />
-
-//         {/* RESET */}
-//         <Route path="/reset" element={<Reset />} />
-
-//         {/* PRIVATE */}
-//         <Route
-//           path="/home"
-//           element={isAuth ? <Login /> : <Navigate to="/" />}
-//         />
-
-//         <Route
-//           path="/profile"
-//           element={isAuth ? <Profile /> : <Navigate to="/" />}
-//         />
-
-//         {/* fallback */}
-//         <Route
-//           path="*"
-//           element={<Navigate to={isAuth ? "/home" : "/"} />}
-//         />
-
-//       </Routes>
-//     </BrowserRouter>
-//   );
-// };
-
-// export default App;
 
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -67,11 +10,13 @@ import MainLayout from "./components/Layout/MainLayout";
 import Home from "./pages/Main/Home";
 import Profile from "./pages/Profile/profile";
 import Explore from "./pages/Explore/explore";
+import Create from "./pages/Create/create";
 
 // auth pages
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
-import Reset from "./pages/Auth/reset";
+import Reset from "./pages/Auth/reset"
+import EditProfile from "./pages/Profile/editProfile";
 
 function App() {
   const isAuth = !!localStorage.getItem("token");
@@ -93,7 +38,7 @@ function App() {
 
         {/* 🔥 страницы с sidebar */}
         <Route element={<MainLayout />}>
-
+        <Route path="/edit-profile" element={<EditProfile />} />
           <Route
             path="/home"
             element={isAuth ? <Home /> : <Navigate to="/" />}
@@ -108,9 +53,13 @@ function App() {
             path="/explore"
             element={isAuth ? <Explore /> : <Navigate to="/" />}
           />
+          <Route
+  path="/create"
+  element={isAuth ? <Create /> : <Navigate to="/" />}
+/>
 
         </Route>
-
+        
       </Routes>
     </BrowserRouter>
   );

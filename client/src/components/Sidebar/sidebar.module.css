@@ -64,3 +64,13 @@
   border-radius: 50%;
   object-fit: cover;
 }
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+  }
+
+  .link span {
+    display: none;
+  }
+}
