@@ -1,28 +1,31 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../../api/axios";
 import styles from "./profile.module.css";
 import Button from "@mui/material/Button";
 
-
 const Profile = () => {
-  const [posts, setPosts] = useState([]);
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const getProfile = async () => {
       try {
-        const userRes = await API.get("/users/me");
-        setUser(userRes.data);
-
-        const postsRes = await API.get("/posts");
-        setPosts(postsRes.data);
+        const res = await API.get("/api/users/me");
+        setUser(res.data);
       } catch (err) {
-        console.log(err);
+        console.log("PROFILE ERROR:", err);
       }
     };
 
-    fetchData();
+    getProfile();
   }, []);
+
+  // 🔥 logout
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
   if (!user) return <p>Loading...</p>;
 
@@ -31,69 +34,60 @@ const Profile = () => {
       
       {/* HEADER */}
       <div className={styles.header}>
-        <img
-          src={user.avatar || "/avatar.png"}
-          className={styles.avatar}
-        />
-
-        <div className={styles.info}>
-         <div className={styles.topRow}>
-  <h2>{user.username}</h2>
-
-  <div className={styles.buttons}>
-    <Button variant="outlined" size="small">
-      Edit Profile
-    </Button>
-
-    <Button
-      variant="contained"
-      size="small"
-      color="error"
-      onClick={() => {
-        localStorage.removeItem("token");
-        window.location.href = "/login";
-      }}
-    >
-      Logout
-    </Button>
-  </div>
-</div>
-
-            <div className={styles.stats}>
-              <span><b>{posts.length}</b> posts</span>
-              <span><b>{user?.followers?.length || 0}</b> followers</span>
-              <span><b>{user?.following?.length || 0}</b> following</span>
-            </div>
-
-            <div className={styles.bio}>
-              {user?.bio || "No bio yet"}
-            </div>
-
-          </div>
-
-          <p className={styles.name}>{user.fullName}</p>
-          <p className={styles.bio}>{user.bio}</p>
+        
+        {/* AVATAR */}
+        <div className={styles.avatarWrapper}>
+          <img
+            src={
+              user.avatar
+                ? `http://127.0.0.1:3333${user.avatar}`
+                : "/avatar.png"
+            }
+            alt="avatar"
+            className={styles.avatar}
+          />
         </div>
 
-        {/* POSTS GRID */}
-    <div className={styles.grid}>
-  {posts.map((post) => (
-    <div className={styles.post} key={post._id}>
-      <img
-        src={
-          post.image.startsWith("http")
-            ? post.image
-            : `http://127.0.0.1:3333${post.image}`
-        }
-        alt="post"
-      />
-    </div>
-  ))}
-</div>
+        {/* INFO */}
+        <div className={styles.info}>
+          
+          {/* TOP ROW */}
+          <div className={styles.topRow}>
+            <h2>{user.username}</h2>
 
-      {/* GRID POSTS */}
+            <Button variant="outlined" size="small">
+              Edit profile
+            </Button>
+
+            <Button
+              variant="contained"
+              color="error"
+              size="small"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          </div>
+
+          {/* STATS */}
+          <div className={styles.stats}>
+            <span><b>0</b> posts</span>
+            <span><b>{user.followers?.length || 0}</b> followers</span>
+            <span><b>{user.following?.length || 0}</b> following</span>
+          </div>
+
+          {/* BIO */}
+          <p className={styles.name}>{user.fullName}</p>
+          <p className={styles.bio}>
+            {user.bio || "No bio yet"}
+          </p>
+
+        </div>
+      </div>
+
+      {/* POSTS GRID */}
       <div className={styles.grid}>
-        {/* пока пусто */}
+        {/* пока пусто — позже добавим посты */}
       </div>
 
     </div>

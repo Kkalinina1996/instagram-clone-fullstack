@@ -66,7 +66,7 @@ import MainLayout from "./components/Layout/MainLayout";
 // pages
 import Home from "./pages/Main/Home";
 import Profile from "./pages/Profile/profile";
-import Explore from "./pages/Explore/Explore";
+import Explore from "./pages/Explore/explore";
 
 // auth pages
 import Login from "./pages/Auth/Login";

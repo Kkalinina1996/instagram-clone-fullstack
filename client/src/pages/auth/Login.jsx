@@ -21,15 +21,15 @@ const Login = () => {
   };
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const res = await API.post("/auth/login", form);
-      console.log(res.data);
+  try {
+    const res = await API.post("/auth/login", form);
 
-      localStorage.setItem("token", res.data.token);
+    localStorage.setItem("token", res.data.token);
 
-      navigate("/profile"); 
+    window.location.href = "/profile"; 
+
   } catch (err) {
     alert(err.response?.data?.message);
   }
