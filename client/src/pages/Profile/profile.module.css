@@ -1,21 +1,21 @@
 .container {
   max-width: 900px;
-  margin: 0 auto;
-  padding: 40px 20px;
+  width: 100%;
+  padding: 30px 20px;
 }
 
 /* HEADER */
 .header {
   display: flex;
-  gap: 60px;
   align-items: center;
+  gap: 60px;
   margin-bottom: 40px;
 }
 
 /* AVATAR */
 .avatarWrapper {
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
 }
 
 .avatar {
@@ -34,7 +34,8 @@
 .topRow {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
+  margin-bottom: 15px;
 }
 
 .topRow h2 {
@@ -47,30 +48,38 @@
   display: flex;
   gap: 30px;
   margin-bottom: 15px;
+  font-size: 14px;
 }
 
 .stats span {
-  font-size: 14px;
+  cursor: pointer;
 }
 
-/* NAME + BIO */
+/* BIO */
 .name {
   font-weight: 600;
-  font-size: 14px;
 }
 
 .bio {
-  font-size: 14px;
   color: #555;
 }
 
+/* POSTS GRID */
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 5px;
 }
 
-
+/* POST */
+.post {
+  width: 100%;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  background: #eee;
+}
 
 .post img {
   width: 100%;
@@ -78,10 +87,21 @@
   object-fit: cover;
 }
 
-.post {
-  position: relative;
+/* 🔥 HOVER OVERLAY */
+.post::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  opacity: 0;
+  transition: 0.2s;
 }
 
+.post:hover::after {
+  opacity: 1;
+}
+
+/* DELETE BUTTON */
 .deleteBtn {
   position: absolute;
   top: 8px;
@@ -90,8 +110,9 @@
   color: white;
   border: none;
   padding: 5px 8px;
-  cursor: pointer;
+  font-size: 12px;
   border-radius: 6px;
+  cursor: pointer;
   opacity: 0;
   transition: 0.2s;
 }

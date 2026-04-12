@@ -1,76 +1,80 @@
-/* SIDEBAR */
 .sidebar {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 250px;
-  height: 100vh;
-  padding: 20px 15px;
-
+  inset: 0 auto 0 0;
+  width: 185px;
+  padding: 24px 16px 20px 22px;
   display: flex;
   flex-direction: column;
-
-  border-right: 1px solid #ddd;
-  background: white;
+  gap: 28px;
+  background: #ffffff;
+  border-right: 1px solid #efefef;
+  box-sizing: border-box;
+  z-index: 20;
 }
 
-/* LOGO */
 .logo {
-  width: 120px;
-  margin-bottom: 40px;
+  width: 74px;
 }
 
-/* NAV */
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 6px;
 }
 
-/* LINK */
 .link {
   display: flex;
   align-items: center;
-  gap: 15px;
-
-  font-size: 16px;
+  gap: 10px;
+  padding: 9px 8px;
+  color: #2a2a2a;
   text-decoration: none;
-  color: black;
-
-  padding: 10px;
-  border-radius: 10px;
-
-  transition: 0.2s;
+  font-size: 12px;
+  font-weight: 400;
+  border-radius: 8px;
 }
 
-/* ICON */
 .link svg {
-  font-size: 26px;
+  font-size: 18px;
 }
 
-/* HOVER */
 .link:hover {
-  background: #f2f2f2;
+  background: #fafafa;
 }
 
-/* ACTIVE */
 .link.active {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .avatar {
-  width: 26px;
-  height: 26px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .sidebar {
-    width: 70px;
+    width: 92px;
+    padding-inline: 14px;
+  }
+
+  .logo {
+    width: 42px;
+  }
+
+  .link {
+    justify-content: center;
+    padding: 10px;
   }
 
   .link span {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .sidebar {
     display: none;
   }
 }

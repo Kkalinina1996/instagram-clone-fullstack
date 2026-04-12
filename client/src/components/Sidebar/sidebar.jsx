@@ -59,7 +59,7 @@ export default function Sidebar() {
 
         <NavLink to="/notifications" className={styles.link}>
           <FavoriteBorderIcon />
-          <span>Notification</span>
+          <span>Notifications</span>
         </NavLink>
 
         <NavLink to="/create" className={styles.link}>

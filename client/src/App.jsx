@@ -11,6 +11,7 @@ import Home from "./pages/Main/Home";
 import Profile from "./pages/Profile/profile";
 import Explore from "./pages/Explore/explore";
 import Create from "./pages/Create/create";
+import Notifications from "./pages/Notifications/notifications";
 
 // auth pages
 import Login from "./pages/Auth/Login";
@@ -52,6 +53,10 @@ function App() {
           <Route
             path="/explore"
             element={isAuth ? <Explore /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/notifications"
+            element={isAuth ? <Notifications /> : <Navigate to="/" />}
           />
           <Route
   path="/create"

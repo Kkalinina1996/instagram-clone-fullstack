@@ -1,0 +1,192 @@
+.wrapper {
+  width: 100%;
+  min-height: 100vh;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.pageLabel {
+  margin: 0;
+  padding: 8px 18px 6px;
+  font-size: 13px;
+  color: #b8b8b8;
+}
+
+.stage {
+  position: relative;
+  min-height: calc(100vh - 27px);
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 286px;
+  padding: 18px 16px;
+  background: #ffffff;
+  border-right: 1px solid #efefef;
+  z-index: 2;
+  box-sizing: border-box;
+  animation: slideInPanel 0.28s ease;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1f1f1f;
+}
+
+.closeButton {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 999px;
+  background: #f6f6f6;
+  color: #222222;
+  cursor: pointer;
+}
+
+.sectionLabel {
+  margin: 0 0 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1f1f1f;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 34px;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar,
+.preview {
+  width: 34px;
+  height: 34px;
+  object-fit: cover;
+}
+
+.avatar {
+  border-radius: 50%;
+}
+
+.preview {
+  border-radius: 4px;
+}
+
+.textBlock {
+  min-width: 0;
+}
+
+.itemText {
+  margin: 0;
+  font-size: 10px;
+  line-height: 1.35;
+  color: #202020;
+}
+
+.time {
+  font-size: 9px;
+  color: #8f8f8f;
+}
+
+.emptyText {
+  margin: 0;
+  font-size: 12px;
+  color: #8f8f8f;
+}
+
+.overlayFeed {
+  position: relative;
+  min-height: calc(100vh - 27px);
+  padding-left: 286px;
+  background: rgba(0, 0, 0, 0.55);
+  animation: fadeOverlay 0.28s ease;
+}
+
+.overlayClose {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  z-index: 0;
+}
+
+.overlayFeed :global(section) {
+  pointer-events: none;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes slideInPanel {
+  from {
+    transform: translateX(-24px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOverlay {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 900px) {
+  .panel {
+    width: 250px;
+  }
+
+  .overlayFeed {
+    padding-left: 250px;
+  }
+}
+
+@media (max-width: 640px) {
+  .stage {
+    min-height: auto;
+  }
+
+  .panel {
+    position: static;
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #efefef;
+  }
+
+  .overlayFeed {
+    padding-left: 0;
+    background: rgba(0, 0, 0, 0.38);
+  }
+}
