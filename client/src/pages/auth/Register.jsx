@@ -75,8 +75,9 @@ const Register = () => {
       const res = await API.post("/api/auth/register", form);
 
       localStorage.setItem("token", res.data.token);
+      window.dispatchEvent(new Event("auth-changed"));
 
-      navigate("/"); 
+      navigate("/profile"); 
     } catch (err) {
       const message = err.response?.data?.message;
 

@@ -29,6 +29,7 @@ const Profile = () => {
   // 🔥 logout
   const handleLogout = () => {
     localStorage.removeItem("token");
+    window.dispatchEvent(new Event("auth-changed"));
     navigate("/login");
   };
 

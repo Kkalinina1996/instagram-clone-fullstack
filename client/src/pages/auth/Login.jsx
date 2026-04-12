@@ -31,6 +31,7 @@ const Login = () => {
 
       // 🔥 сохраняем токен
       localStorage.setItem("token", res.data.token);
+      window.dispatchEvent(new Event("auth-changed"));
 
       // 🔥 переход без перезагрузки
       navigate("/profile");
