@@ -138,8 +138,10 @@
   position: relative;
   min-height: calc(100vh - 27px);
   padding-left: 286px;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(2px);
   animation: fadeOverlay 0.28s ease;
+  overflow: hidden;
 }
 
 .overlayClose {
@@ -155,6 +157,25 @@
   pointer-events: none;
   position: relative;
   z-index: 1;
+  opacity: 0.55;
+  filter: brightness(0.6) contrast(0.9);
+}
+
+.feedPreview {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: calc(100vh - 27px);
+  padding: 18px 24px 0;
+}
+
+.feedPreview :global(section) {
+  width: 100%;
+  max-width: 610px;
+  transform: scale(0.7);
+  transform-origin: top center;
 }
 
 @keyframes slideInPanel {
@@ -187,6 +208,11 @@
   .overlayFeed {
     padding-left: 250px;
   }
+
+  .feedPreview :global(section) {
+    max-width: 560px;
+    transform: scale(0.66);
+  }
 }
 
 @media (max-width: 640px) {
@@ -203,6 +229,15 @@
 
   .overlayFeed {
     padding-left: 0;
-    background: rgba(0, 0, 0, 0.38);
+    background: rgba(0, 0, 0, 0.65);
+  }
+
+  .feedPreview {
+    padding: 14px 10px 0;
+  }
+
+  .feedPreview :global(section) {
+    max-width: none;
+    transform: scale(0.82);
   }
 }

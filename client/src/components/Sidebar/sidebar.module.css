@@ -1,78 +1,158 @@
+/* sidebar.module.css — Option A: Minimal MUI, refined */
+
 .sidebar {
   position: fixed;
   inset: 0 auto 0 0;
   width: 185px;
-  padding: 24px 16px 20px 22px;
+  padding: 24px 12px 20px 12px;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 24px;
   background: #ffffff;
   border-right: 1px solid #efefef;
   box-sizing: border-box;
   z-index: 20;
 }
 
+/* ── Logo ──────────────────────────────────────────── */
 .logo {
-  width: 74px;
+  width: 100px;
+  margin-left: 8px;
+  display: block;
+  user-select: none;
 }
 
+/* ── Nav ───────────────────────────────────────────── */
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 2px;
+  flex: 1;
 }
 
+/* ── Link base ─────────────────────────────────────── */
 .link {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 9px 8px;
-  color: #2a2a2a;
-  text-decoration: none;
-  font-size: 12px;
+  gap: 11px;
+  padding: 9px 10px;
+  border-radius: 10px;
+  font-size: 13px;
   font-weight: 400;
-  border-radius: 8px;
-}
-
-.link svg {
-  font-size: 18px;
+  color: #1a1a1a;
+  text-decoration: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  transition: background 0.12s ease;
+  line-height: 1;
+  cursor: pointer;
 }
 
 .link:hover {
-  background: #fafafa;
+  background: #f5f5f5;
 }
 
+/* ── Active pill ───────────────────────────────────── */
 .link.active {
-  font-weight: 700;
+  background: #f0f0f0;
+  font-weight: 600;
 }
 
+/* ── Icon ──────────────────────────────────────────── */
+.iconWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.iconWrap svg {
+  font-size: 20px !important;
+}
+
+/* ── Label ─────────────────────────────────────────── */
+.label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.1px;
+}
+
+/* ── Profile link ──────────────────────────────────── */
+.profileLink {
+  margin-top: auto;
+}
+
+/* ── Avatar image ──────────────────────────────────── */
 .avatar {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   object-fit: cover;
+  flex-shrink: 0;
+  border: 1.5px solid #e0e0e0;
+  transition: border-color 0.12s;
 }
 
+/* ── Avatar fallback (initials) ────────────────────── */
+.avatarFallback {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #d4d4d4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 7px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+  border: 1.5px solid #e0e0e0;
+  transition: border-color 0.12s;
+}
+
+.avatarActive {
+  border-color: #1a1a1a;
+}
+
+/* ── Tablet: icon-only ─────────────────────────────── */
 @media (max-width: 900px) {
   .sidebar {
-    width: 92px;
-    padding-inline: 14px;
+    width: 68px;
+    padding: 24px 10px 20px;
+    gap: 20px;
+    align-items: center;
   }
 
   .logo {
-    width: 42px;
+    width: 32px;
+    margin-left: 0;
+  }
+
+  .nav {
+    width: 100%;
   }
 
   .link {
     justify-content: center;
     padding: 10px;
+    gap: 0;
+    border-radius: 10px;
   }
 
-  .link span {
+  .label {
     display: none;
+  }
+
+  .iconWrap {
+    width: 22px;
+    height: 22px;
   }
 }
 
+/* ── Mobile: hidden ────────────────────────────────── */
 @media (max-width: 640px) {
   .sidebar {
     display: none;

@@ -21,6 +21,31 @@ const formatCount = (count, singular, plural = `${singular}s`) => {
   return `${value} ${value === 1 ? singular : plural}`;
 };
 
+const formatRelativeTime = (dateString) => {
+  if (!dateString) return "";
+
+  const diffMs = Date.now() - new Date(dateString).getTime();
+  const diffMinutes = Math.max(0, Math.floor(diffMs / 60000));
+
+  if (diffMinutes < 1) return "just now";
+  if (diffMinutes < 60) return `${diffMinutes} min`;
+
+  const diffHours = Math.floor(diffMinutes / 60);
+  if (diffHours < 24) return `${diffHours} h`;
+
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays < 7) return `${diffDays} d`;
+
+  const diffWeeks = Math.floor(diffDays / 7);
+  if (diffWeeks < 5) return `${diffWeeks} week`;
+
+  const diffMonths = Math.floor(diffDays / 30);
+  if (diffMonths < 12) return `${diffMonths} mo`;
+
+  const diffYears = Math.floor(diffDays / 365);
+  return `${diffYears} y`;
+};
+
 const SearchPage = () => {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
@@ -62,12 +87,26 @@ const SearchPage = () => {
     };
 
     fetchPosts();
+
+    const refreshPosts = () => {
+      fetchPosts();
+    };
+
+    window.addEventListener("posts-changed", refreshPosts);
+
+    const intervalId = window.setInterval(fetchPosts, 8000);
+
+    return () => {
+      window.removeEventListener("posts-changed", refreshPosts);
+      window.clearInterval(intervalId);
+    };
   }, []);
 
   const handleToggleLike = async (postId) => {
     try {
       const res = await API.post(`/api/likes/${postId}`);
       const nextLikesCount = res.data?.likesCount ?? 0;
+      window.dispatchEvent(new Event("notifications-changed"));
 
       setPosts((currentPosts) =>
         currentPosts.map((post) => {
@@ -167,7 +206,7 @@ const SearchPage = () => {
                   key={user._id}
                   type="button"
                   className={styles.userRow}
-                  onClick={() => navigate("/profile")}
+                  onClick={() => navigate(`/user/${user._id}`)}
                 >
                   <img
                     src={getImageUrl(user.avatar)}
@@ -194,71 +233,75 @@ const SearchPage = () => {
             aria-label="Close search panel"
           />
 
-          <section className={homeStyles.page}>
-            <div className={homeStyles.grid}>
-              {posts.map((post) => (
-                <article key={post._id} className={homeStyles.postCard}>
-                  <div className={homeStyles.header}>
-                    <div className={homeStyles.author}>
-                      <img
-                        src={getImageUrl(post.author?.avatar)}
-                        alt={post.author?.username || "user"}
-                        className={homeStyles.avatar}
-                      />
-                      <div className={homeStyles.authorInfo}>
-                        <p className={homeStyles.username}>
-                          {post.author?.username || "unknown"}
-                        </p>
-                        <span className={homeStyles.time}>2 week</span>
+          <div className={styles.feedPreview}>
+            <section className={homeStyles.page}>
+              <div className={homeStyles.grid}>
+                {posts.map((post) => (
+                  <article key={post._id} className={homeStyles.postCard}>
+                    <div className={homeStyles.header}>
+                      <div className={homeStyles.author}>
+                        <img
+                          src={getImageUrl(post.author?.avatar)}
+                          alt={post.author?.username || "user"}
+                          className={homeStyles.avatar}
+                        />
+                        <div className={homeStyles.authorInfo}>
+                          <p className={homeStyles.username}>
+                            {post.author?.username || "unknown"}
+                          </p>
+                          <span className={homeStyles.time}>
+                            {formatRelativeTime(post.createdAt)}
+                          </span>
+                        </div>
                       </div>
-                    </div>
 
-                    <button type="button" className={homeStyles.moreButton}>
-                      <MoreHorizIcon />
-                    </button>
-                  </div>
-
-                  <img
-                    src={getImageUrl(post.image)}
-                    alt={post.caption || "post"}
-                    className={homeStyles.postImage}
-                  />
-
-                  <div className={homeStyles.body}>
-                    <div className={homeStyles.actions}>
-                      <button
-                        type="button"
-                        className={homeStyles.actionButton}
-                        onClick={() => handleToggleLike(post._id)}
-                      >
-                        <FavoriteBorderIcon />
-                      </button>
-                      <button type="button" className={homeStyles.actionButton}>
-                        <ChatBubbleOutlineIcon />
+                      <button type="button" className={homeStyles.moreButton}>
+                        <MoreHorizIcon />
                       </button>
                     </div>
 
-                    <p className={homeStyles.likes}>
-                      {formatCount(post.likes?.length, "like")}
-                    </p>
-                    <p className={homeStyles.caption}>
-                      <strong>{post.author?.username || "unknown"}</strong>{" "}
-                      {post.caption || "heryyy"}
-                    </p>
-                    <p className={homeStyles.comments}>
-                      View all comments ({commentCounts[post._id] || 0})
-                    </p>
-                  </div>
-                </article>
-              ))}
-            </div>
+                    <img
+                      src={getImageUrl(post.image)}
+                      alt={post.caption || "post"}
+                      className={homeStyles.postImage}
+                    />
 
-            <div className={homeStyles.endBlock}>
-              <div className={homeStyles.endIcon}>✓</div>
-              <p className={homeStyles.endTitle}>You&apos;ve seen all the updates</p>
-              <p className={homeStyles.endText}>You have viewed all new publications</p>
-            </div>
-          </section>
+                    <div className={homeStyles.body}>
+                      <div className={homeStyles.actions}>
+                        <button
+                          type="button"
+                          className={homeStyles.actionButton}
+                          onClick={() => handleToggleLike(post._id)}
+                        >
+                          <FavoriteBorderIcon />
+                        </button>
+                        <button type="button" className={homeStyles.actionButton}>
+                          <ChatBubbleOutlineIcon />
+                        </button>
+                      </div>
+
+                      <p className={homeStyles.likes}>
+                        {formatCount(post.likes?.length, "like")}
+                      </p>
+                      <p className={homeStyles.caption}>
+                        <strong>{post.author?.username || "unknown"}</strong>{" "}
+                        {post.caption || "heryyy"}
+                      </p>
+                      <p className={homeStyles.comments}>
+                        View all comments ({commentCounts[post._id] || 0})
+                      </p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+
+              <div className={homeStyles.endBlock}>
+                <div className={homeStyles.endIcon}>✓</div>
+                <p className={homeStyles.endTitle}>You&apos;ve seen all the updates</p>
+                <p className={homeStyles.endText}>You have viewed all new publications</p>
+              </div>
+            </section>
+          </div>
         </div>
       </div>
     </section>

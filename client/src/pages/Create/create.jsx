@@ -35,6 +35,7 @@ const Create = ({ onClose }) => {
       formData.append("caption", caption);
 
       await API.post("/api/posts", formData);
+      window.dispatchEvent(new Event("posts-changed"));
 
       // 🔥 если modal — закрываем
       if (onClose) onClose();

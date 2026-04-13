@@ -121,6 +121,97 @@
   color: #a6a6a6;
 }
 
+.commentsButton {
+  border: none;
+  padding: 0;
+  background: transparent;
+  color: #a6a6a6;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.commentsList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.commentItem,
+.noComments {
+  margin: 0;
+  font-size: 10px;
+  line-height: 1.45;
+  color: #1f1f1f;
+}
+
+.noComments {
+  color: #a6a6a6;
+}
+
+.commentForm {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #efefef;
+}
+
+.commentInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 11px;
+  color: #1f1f1f;
+}
+
+.emojiWrapper {
+  position: relative;
+}
+
+.emojiButton {
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.emojiPanel {
+  position: absolute;
+  left: 0;
+  bottom: 30px;
+  display: flex;
+  gap: 4px;
+  padding: 6px;
+  border: 1px solid #efefef;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.emojiOption {
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.commentButton {
+  border: none;
+  background: transparent;
+  color: #3797f0;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.commentButton:disabled {
+  color: #9ecaf3;
+  cursor: default;
+}
+
 .endBlock {
   display: flex;
   flex-direction: column;

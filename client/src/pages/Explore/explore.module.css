@@ -1,48 +1,202 @@
+/* explore.module.css */
+
 .container {
-  max-width: 900px;
-  margin: 0 auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 32px;
+  overflow-y: auto;
+  background: #fff;
 }
 
-/* GRID */
+/* ── Grid ──────────────────────────────────────────── */
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 5px;
+  grid-auto-rows: 220px;
+  gap: 4px;
 }
 
-/* CARD */
 .card {
   position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1;
   overflow: hidden;
+  border-radius: 4px;
   cursor: pointer;
+  background: #f0f0f0;
+  transition: transform 0.22s ease;
 }
 
-/* IMAGE */
+.card:hover {
+  transform: scale(1.02);
+  z-index: 1;
+}
+
+/* every 6th card (index % 5 === 1) spans 2 rows — mirrors Figma layout */
+.tall {
+  grid-row: span 2;
+}
+
 .card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
+  transition: filter 0.2s ease;
 }
 
-/* OVERLAY */
-.overlay {
+.card:hover img {
+  filter: brightness(0.78);
+}
+
+/* hover overlay */
+.cardOverlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
-  color: white;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   opacity: 0;
-  transition: 0.2s;
-  font-weight: 500;
+  transition: opacity 0.2s ease;
 }
 
-/* HOVER */
-.card:hover .overlay {
+.card:hover .cardOverlay {
   opacity: 1;
+}
+
+.likesCount {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Skeleton loader ───────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Modal ─────────────────────────────────────────── */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.18s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal {
+  position: relative;
+  display: flex;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  max-width: 860px;
+  width: 90vw;
+  max-height: 90vh;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.22s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(24px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.modalClose {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: background 0.15s;
+}
+
+.modalClose:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.modalImg {
+  width: 58%;
+  max-height: 90vh;
+  object-fit: cover;
+  display: block;
+  flex-shrink: 0;
+}
+
+.modalInfo {
+  flex: 1;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+.modalAuthor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modalAvatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #d4d4d4, #a8a8a8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.modalUsername {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+}
+
+.modalCaption {
+  font-size: 14px;
+  color: #333;
+  line-height: 1.6;
+}
+
+.modalLikes {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+  margin-top: auto;
 }

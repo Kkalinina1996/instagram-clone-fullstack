@@ -8,10 +8,12 @@ import MainLayout from "./components/Layout/MainLayout";
 // pages
 import Home from "./pages/Main/Home";
 import Profile from "./pages/Profile/profile";
+import OtherProfile from "./pages/Profile/otherProfile";
 import Explore from "./pages/Explore/explore";
 import Create from "./pages/Create/create";
 import Notifications from "./pages/Notifications/notifications";
 import SearchPage from "./pages/Search/search";
+import Messages from "./pages/Messages/messages";
 
 // auth pages
 import Login from "./pages/Auth/Login";
@@ -81,6 +83,10 @@ function App() {
             path="/profile"
             element={isAuth ? <Profile /> : <Navigate to="/" replace />}
           />
+          <Route
+            path="/user/:id"
+            element={isAuth ? <OtherProfile /> : <Navigate to="/" replace />}
+          />
 
           <Route
             path="/explore"
@@ -89,6 +95,10 @@ function App() {
           <Route
             path="/notifications"
             element={isAuth ? <Notifications /> : <Navigate to="/" replace />}
+          />
+          <Route
+            path="/messages"
+            element={isAuth ? <Messages /> : <Navigate to="/" replace />}
           />
           <Route
   path="/create"
