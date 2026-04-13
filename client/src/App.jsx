@@ -11,6 +11,8 @@ import Profile from "./pages/Profile/profile";
 import OtherProfile from "./pages/Profile/otherProfile";
 import Explore from "./pages/Explore/explore";
 import Create from "./pages/Create/create";
+import EditPost from "./pages/Create/editPost";
+import EditPostForm from "./pages/Create/editPostForm";
 import Notifications from "./pages/Notifications/notifications";
 import SearchPage from "./pages/Search/search";
 import Messages from "./pages/Messages/messages";
@@ -66,10 +68,18 @@ function App() {
 
         {/* 🔥 страницы с sidebar */}
         <Route element={<MainLayout />}>
-        <Route
-          path="/edit-profile"
-          element={isAuth ? <EditProfile /> : <Navigate to="/" replace />}
-        />
+          <Route
+            path="/edit-profile"
+            element={isAuth ? <EditProfile /> : <Navigate to="/" replace />}
+          />
+          <Route
+            path="/edit-post/:id"
+            element={isAuth ? <EditPostForm /> : <Navigate to="/" replace />}
+          />
+          <Route
+            path="/edit-post/:id/actions"
+            element={isAuth ? <EditPost /> : <Navigate to="/" replace />}
+          />
           <Route
             path="/home"
             element={isAuth ? <Home /> : <Navigate to="/" replace />}

@@ -1,12 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../../api/axios";
+import PostDetailModal from "../../components/PostDetailModal/PostDetailModal";
 import styles from "./profile.module.css";
 import Button from "@mui/material/Button";
+
+const API_BASE = "http://127.0.0.1:3333";
+
+const getImageUrl = (path) => {
+  if (!path) return "/avatar.png";
+  return path.startsWith("http") ? path : `${API_BASE}${path}`;
+};
 
 const Profile = () => {
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [selectedPostId, setSelectedPostId] = useState(null);
   const navigate = useNavigate();
 
   // 🔥 загрузка данных
@@ -33,27 +42,23 @@ const Profile = () => {
     navigate("/login");
   };
 
-  // 🔥 delete post
-  const deletePost = async (id) => {
-    try {
-      await API.delete(`/api/posts/${id}`);
-      setPosts(posts.filter((p) => p._id !== id));
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const userPosts = useMemo(() => {
+    if (!user) return [];
+
+    return posts.filter((post) => {
+      const authorId =
+        typeof post.author === "object"
+          ? post.author._id
+          : post.author;
+
+      return authorId === user._id;
+    });
+  }, [posts, user]);
+
+  const selectedPost =
+    userPosts.find((post) => post._id === selectedPostId) || null;
 
   if (!user) return <p>Loading...</p>;
-
-  // 🔥 только свои посты
-  const userPosts = posts.filter((post) => {
-    const authorId =
-      typeof post.author === "object"
-        ? post.author._id
-        : post.author;
-
-    return authorId === user._id;
-  });
 
   return (
     <div className={styles.container}>
@@ -64,11 +69,7 @@ const Profile = () => {
         {/* AVATAR */}
         <div className={styles.avatarWrapper}>
           <img
-            src={
-              user.avatar
-                ? `http://127.0.0.1:3333${user.avatar}`
-                : "/avatar.png"
-            }
+            src={getImageUrl(user.avatar)}
             alt="avatar"
             className={styles.avatar}
           />
@@ -118,23 +119,35 @@ const Profile = () => {
       {/* 🔥 POSTS GRID */}
       <div className={styles.grid}>
         {userPosts.map((post) => (
-          <div key={post._id} className={styles.post}>
+          <div
+            key={post._id}
+            className={styles.post}
+            onClick={() => setSelectedPostId(post._id)}
+          >
             
             <img
-              src={`http://127.0.0.1:3333${post.image}`}
+              src={getImageUrl(post.image)}
               alt="post"
             />
-
-            <button
-              className={styles.deleteBtn}
-              onClick={() => deletePost(post._id)}
-            >
-              Delete
-            </button>
 
           </div>
         ))}
       </div>
+
+      {selectedPost && (
+        <PostDetailModal
+          post={selectedPost}
+          currentUser={user}
+          onClose={() => setSelectedPostId(null)}
+          onLike={async (postId) => {
+            await API.post(`/api/likes/${postId}`);
+            const postsRes = await API.get("/api/posts");
+            setPosts(postsRes.data || []);
+            window.dispatchEvent(new Event("notifications-changed"));
+            window.dispatchEvent(new Event("posts-changed"));
+          }}
+        />
+      )}
 
     </div>
   );

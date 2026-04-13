@@ -1,202 +1,121 @@
-/* explore.module.css */
-
-.container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 24px 32px;
-  overflow-y: auto;
-  background: #fff;
+.wrapper {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
-/* ── Grid ──────────────────────────────────────────── */
-.grid {
+.pageLabel {
+  margin: 0;
+  padding: 12px 22px 10px;
+  font-size: 32px;
+  font-weight: 300;
+  color: #c2c2c2;
+}
+
+.stage {
+  min-height: calc(100vh - 56px);
+  background: #f5f5f5;
+  padding: 10px 0 46px;
+  box-sizing: border-box;
+}
+
+.canvas {
+  width: min(975px, calc(100% - 40px));
+  min-height: 1376px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid #ececec;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.loadingText {
+  margin: 0;
+  padding: 30px 16px;
+  text-align: center;
+  color: #8a8a8a;
+  font-size: 14px;
+}
+
+.mosaic {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: 220px;
-  gap: 4px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: 116px;
+  grid-auto-flow: dense;
+  gap: 2px;
 }
 
-.card {
+.tile {
   position: relative;
   overflow: hidden;
-  border-radius: 4px;
   cursor: pointer;
-  background: #f0f0f0;
-  transition: transform 0.22s ease;
+  background: #efefef;
 }
 
-.card:hover {
-  transform: scale(1.02);
-  z-index: 1;
-}
-
-/* every 6th card (index % 5 === 1) spans 2 rows — mirrors Figma layout */
-.tall {
+.square {
   grid-row: span 2;
 }
 
-.card img {
+.tall {
+  grid-row: span 3;
+}
+
+.big {
+  grid-row: span 4;
+}
+
+.wide {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
   display: block;
-  transition: filter 0.2s ease;
-}
-
-.card:hover img {
-  filter: brightness(0.78);
-}
-
-/* hover overlay */
-.cardOverlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.card:hover .cardOverlay {
-  opacity: 1;
-}
-
-.likesCount {
-  color: #fff;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-}
-
-/* ── Skeleton loader ───────────────────────────────── */
-.skeleton {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.4s infinite;
-}
-
-@keyframes shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-/* ── Modal ─────────────────────────────────────────── */
-.modalOverlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.65);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-  backdrop-filter: blur(4px);
-  animation: fadeIn 0.18s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-.modal {
-  position: relative;
-  display: flex;
-  background: #fff;
-  border-radius: 16px;
-  overflow: hidden;
-  max-width: 860px;
-  width: 90vw;
-  max-height: 90vh;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
-  animation: slideUp 0.22s ease;
-}
-
-@keyframes slideUp {
-  from { transform: translateY(24px); opacity: 0; }
-  to   { transform: translateY(0);    opacity: 1; }
-}
-
-.modalClose {
-  position: absolute;
-  top: 12px;
-  right: 14px;
-  background: rgba(0, 0, 0, 0.55);
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  font-size: 13px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  transition: background 0.15s;
-}
-
-.modalClose:hover {
-  background: rgba(0, 0, 0, 0.8);
-}
-
-.modalImg {
-  width: 58%;
-  max-height: 90vh;
   object-fit: cover;
-  display: block;
-  flex-shrink: 0;
 }
 
-.modalInfo {
-  flex: 1;
-  padding: 28px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  overflow-y: auto;
+@media (max-width: 900px) {
+  .pageLabel {
+    font-size: 28px;
+    padding: 12px 16px 8px;
+  }
+
+  .canvas {
+    width: min(975px, calc(100% - 24px));
+    min-height: 1200px;
+    padding: 6px;
+  }
+
+  .mosaic {
+    grid-auto-rows: 96px;
+  }
 }
 
-.modalAuthor {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+@media (max-width: 640px) {
+  .stage {
+    padding: 10px 0 110px;
+  }
 
-.modalAvatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #d4d4d4, #a8a8a8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 15px;
-  font-weight: 700;
-  color: #fff;
-  flex-shrink: 0;
-}
+  .pageLabel {
+    font-size: 24px;
+    padding: 10px 12px 8px;
+  }
 
-.modalUsername {
-  font-size: 15px;
-  font-weight: 700;
-  color: #111;
-}
+  .canvas {
+    width: calc(100% - 12px);
+    min-height: auto;
+    padding: 4px;
+  }
 
-.modalCaption {
-  font-size: 14px;
-  color: #333;
-  line-height: 1.6;
-}
+  .mosaic {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 120px;
+    gap: 2px;
+  }
 
-.modalLikes {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #111;
-  margin-top: auto;
+  .wide {
+    grid-column: span 2;
+  }
 }

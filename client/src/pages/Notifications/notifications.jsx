@@ -5,6 +5,7 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import CloseIcon from "@mui/icons-material/Close";
 import API from "../../api/axios";
+import PostDetailModal from "../../components/PostDetailModal/PostDetailModal";
 import homeStyles from "../Main/home.module.css";
 import styles from "./notifications.module.css";
 
@@ -58,6 +59,7 @@ const Notifications = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [commentCounts, setCommentCounts] = useState({});
   const [notifications, setNotifications] = useState([]);
+  const [selectedPostId, setSelectedPostId] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -153,6 +155,9 @@ const Notifications = () => {
     }
   };
 
+  const selectedPost =
+    posts.find((post) => post._id === selectedPostId) || null;
+
   return (
     <section className={styles.wrapper}>
       <p className={styles.pageLabel}>Main - notification</p>
@@ -220,10 +225,20 @@ const Notifications = () => {
           />
 
           <div className={styles.feedPreview}>
-            <section className={homeStyles.page}>
+            <section
+              className={homeStyles.page}
+              onClick={() => navigate("/home")}
+            >
               <div className={homeStyles.grid}>
                 {posts.map((post) => (
-                  <article key={post._id} className={homeStyles.postCard}>
+                  <article
+                    key={post._id}
+                    className={homeStyles.postCard}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setSelectedPostId(post._id);
+                    }}
+                  >
                     <div className={homeStyles.header}>
                       <div className={homeStyles.author}>
                         <img
@@ -242,7 +257,11 @@ const Notifications = () => {
                         </div>
                       </div>
 
-                      <button type="button" className={homeStyles.moreButton}>
+                      <button
+                        type="button"
+                        className={homeStyles.moreButton}
+                        onClick={(event) => event.stopPropagation()}
+                      >
                         <MoreHorizIcon />
                       </button>
                     </div>
@@ -258,11 +277,18 @@ const Notifications = () => {
                         <button
                           type="button"
                           className={homeStyles.actionButton}
-                          onClick={() => handleToggleLike(post._id)}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            handleToggleLike(post._id);
+                          }}
                         >
                           <FavoriteBorderIcon />
                         </button>
-                        <button type="button" className={homeStyles.actionButton}>
+                        <button
+                          type="button"
+                          className={homeStyles.actionButton}
+                          onClick={(event) => event.stopPropagation()}
+                        >
                           <ChatBubbleOutlineIcon />
                         </button>
                       </div>
@@ -274,7 +300,10 @@ const Notifications = () => {
                         <strong>{post.author?.username || "unknown"}</strong>{" "}
                         {post.caption || "heryyy"}
                       </p>
-                      <p className={homeStyles.comments}>
+                      <p
+                        className={homeStyles.comments}
+                        onClick={(event) => event.stopPropagation()}
+                      >
                         View all comments ({commentCounts[post._id] || 0})
                       </p>
                     </div>
@@ -289,6 +318,15 @@ const Notifications = () => {
               </div>
             </section>
           </div>
+
+          {selectedPost && (
+            <PostDetailModal
+              post={selectedPost}
+              currentUser={currentUser}
+              onClose={() => setSelectedPostId(null)}
+              onLike={handleToggleLike}
+            />
+          )}
         </div>
       </div>
     </section>

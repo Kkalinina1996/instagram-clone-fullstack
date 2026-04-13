@@ -3,6 +3,7 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import API from "../../api/axios";
+import PostDetailModal from "../../components/PostDetailModal/PostDetailModal";
 import styles from "./home.module.css";
 
 const API_BASE = "http://127.0.0.1:3333";
@@ -51,9 +52,12 @@ const Home = () => {
   const [commentText, setCommentText] = useState({});
   const [commentLoading, setCommentLoading] = useState({});
   const [emojiOpen, setEmojiOpen] = useState({});
+  const [selectedPostId, setSelectedPostId] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const emojiList = ["😀", "😂", "😍", "🔥", "👏", "😭"];
+  const selectedPost =
+    posts.find((post) => post._id === selectedPostId) || null;
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -219,6 +223,7 @@ const Home = () => {
       }));
 
       window.dispatchEvent(new Event("notifications-changed"));
+      window.dispatchEvent(new Event("posts-changed"));
     } catch (error) {
       console.log("Comment error:", error);
     } finally {
@@ -248,7 +253,11 @@ const Home = () => {
         <>
           <div className={styles.grid}>
             {posts.map((post) => (
-              <article key={post._id} className={styles.postCard}>
+              <article
+                key={post._id}
+                className={styles.postCard}
+                onClick={() => setSelectedPostId(post._id)}
+              >
                 <div className={styles.header}>
                   <div className={styles.author}>
                     <img
@@ -258,14 +267,20 @@ const Home = () => {
                     />
 
                     <div className={styles.authorInfo}>
-                      <p className={styles.username}>{post.author?.username || "unknown"}</p>
+                      <p className={styles.username}>
+                        {post.author?.username || "unknown"}
+                      </p>
                       <span className={styles.time}>
                         {formatRelativeTime(post.createdAt)}
                       </span>
                     </div>
                   </div>
 
-                  <button type="button" className={styles.moreButton}>
+                  <button
+                    type="button"
+                    className={styles.moreButton}
+                    onClick={(event) => event.stopPropagation()}
+                  >
                     <MoreHorizIcon />
                   </button>
                 </div>
@@ -281,11 +296,18 @@ const Home = () => {
                     <button
                       type="button"
                       className={styles.actionButton}
-                      onClick={() => handleToggleLike(post._id)}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleToggleLike(post._id);
+                      }}
                     >
                       <FavoriteBorderIcon />
                     </button>
-                    <button type="button" className={styles.actionButton}>
+                    <button
+                      type="button"
+                      className={styles.actionButton}
+                      onClick={(event) => event.stopPropagation()}
+                    >
                       <ChatBubbleOutlineIcon />
                     </button>
                   </div>
@@ -300,7 +322,10 @@ const Home = () => {
                   <button
                     type="button"
                     className={styles.commentsButton}
-                    onClick={() => handleToggleComments(post._id)}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleToggleComments(post._id);
+                    }}
                   >
                     View all comments ({commentCounts[post._id] || 0})
                   </button>
@@ -310,9 +335,7 @@ const Home = () => {
                       {(commentsByPost[post._id] || []).length > 0 ? (
                         commentsByPost[post._id].map((comment) => (
                           <p key={comment._id} className={styles.commentItem}>
-                            <strong>
-                              {comment.user?.username || "user"}
-                            </strong>{" "}
+                            <strong>{comment.user?.username || "user"}</strong>{" "}
                             {comment.text}
                           </p>
                         ))
@@ -322,17 +345,21 @@ const Home = () => {
                     </div>
                   )}
 
-                  <div className={styles.commentForm}>
+                  <div
+                    className={styles.commentForm}
+                    onClick={(event) => event.stopPropagation()}
+                  >
                     <div className={styles.emojiWrapper}>
                       <button
                         type="button"
                         className={styles.emojiButton}
-                        onClick={() =>
+                        onClick={(event) => {
+                          event.stopPropagation();
                           setEmojiOpen((current) => ({
                             ...current,
                             [post._id]: !current[post._id],
-                          }))
-                        }
+                          }));
+                        }}
                       >
                         😊
                       </button>
@@ -344,7 +371,10 @@ const Home = () => {
                               key={emoji}
                               type="button"
                               className={styles.emojiOption}
-                              onClick={() => handleAddEmoji(post._id, emoji)}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                handleAddEmoji(post._id, emoji);
+                              }}
                             >
                               {emoji}
                             </button>
@@ -357,11 +387,13 @@ const Home = () => {
                       type="text"
                       placeholder="Add a comment..."
                       value={commentText[post._id] || ""}
+                      onClick={(event) => event.stopPropagation()}
                       onChange={(event) =>
                         handleCommentChange(post._id, event.target.value)
                       }
                       onKeyDown={(event) => {
                         if (event.key === "Enter") {
+                          event.stopPropagation();
                           handleAddComment(post._id);
                         }
                       }}
@@ -371,7 +403,10 @@ const Home = () => {
                     <button
                       type="button"
                       className={styles.commentButton}
-                      onClick={() => handleAddComment(post._id)}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleAddComment(post._id);
+                      }}
                       disabled={
                         commentLoading[post._id] ||
                         !commentText[post._id]?.trim()
@@ -396,6 +431,15 @@ const Home = () => {
           <h2>Your feed is empty</h2>
           <p>Create the first post to make this page look like the Figma screen.</p>
         </div>
+      )}
+
+      {selectedPost && (
+        <PostDetailModal
+          post={selectedPost}
+          currentUser={currentUser}
+          onClose={() => setSelectedPostId(null)}
+          onLike={handleToggleLike}
+        />
       )}
     </section>
   );

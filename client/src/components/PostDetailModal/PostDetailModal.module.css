@@ -1,0 +1,311 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.modal {
+  position: relative;
+  display: flex;
+  width: min(1120px, 96vw);
+  height: min(720px, 92vh);
+  overflow: hidden;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+}
+
+.media {
+  flex: 1.25;
+  min-width: 0;
+  background: #1e1e1e;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  background: #0f0f0f;
+}
+
+.info {
+  flex: 0 0 414px;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #efefef;
+  background: #ffffff;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid #efefef;
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.avatar,
+.commentAvatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: 0 0 auto;
+}
+
+.authorText {
+  min-width: 0;
+}
+
+.username {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1d1d1d;
+}
+
+.time,
+.commentTime,
+.postTime {
+  font-size: 11px;
+  color: #8f8f8f;
+}
+
+.menuButton {
+  border: none;
+  background: transparent;
+  color: #2d2d2d;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.commentsSection {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 20px 18px;
+}
+
+.comment {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.commentBody {
+  min-width: 0;
+}
+
+.commentText {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #1f1f1f;
+}
+
+.emptyComments,
+.loading {
+  margin: 0;
+  font-size: 12px;
+  color: #8f8f8f;
+}
+
+.footer {
+  border-top: 1px solid #efefef;
+  padding: 12px 20px 14px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.iconButton {
+  border: none;
+  padding: 0;
+  background: transparent;
+  color: #202020;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconButton svg {
+  font-size: 20px;
+}
+
+.likedIcon {
+  color: #ed4956;
+}
+
+.meta {
+  margin-bottom: 10px;
+}
+
+.likes {
+  margin: 0 0 2px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1f1f1f;
+}
+
+.postTime {
+  margin: 0;
+}
+
+.composer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid #efefef;
+}
+
+.emojiButton {
+  border: none;
+  background: transparent;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.emojiPanel {
+  position: absolute;
+  left: 0;
+  bottom: 42px;
+  display: flex;
+  gap: 4px;
+  padding: 8px;
+  border: 1px solid #efefef;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.12);
+}
+
+.emojiOption {
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 13px;
+  color: #1f1f1f;
+}
+
+.input::placeholder {
+  color: #a7a7a7;
+}
+
+.sendButton {
+  border: none;
+  background: transparent;
+  color: #3797f0;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sendButton:disabled {
+  color: #9ecaf3;
+  cursor: default;
+}
+
+.menuOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.menuCard {
+  width: min(320px, 82vw);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.25);
+}
+
+.menuItem {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #efefef;
+  padding: 14px 18px;
+  background: #ffffff;
+  color: #202020;
+  font-size: 15px;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+}
+
+.menuItem:last-child {
+  border-bottom: none;
+}
+
+.menuDanger {
+  color: #df3f4a;
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .modal {
+    width: min(960px, 98vw);
+  }
+
+  .info {
+    flex-basis: 340px;
+  }
+}
+
+@media (max-width: 720px) {
+  .overlay {
+    padding: 10px;
+  }
+
+  .modal {
+    flex-direction: column;
+    width: 100%;
+    height: 94vh;
+  }
+
+  .media {
+    flex: 0 0 52%;
+  }
+
+  .info {
+    flex: 1;
+    border-left: none;
+    border-top: 1px solid #efefef;
+  }
+}

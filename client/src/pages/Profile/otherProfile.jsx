@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import API from "../../api/axios";
+import PostDetailModal from "../../components/PostDetailModal/PostDetailModal";
 import styles from "./otherProfile.module.css";
 
 const API_BASE = "http://127.0.0.1:3333";
@@ -18,6 +19,7 @@ const OtherProfile = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [followLoading, setFollowLoading] = useState(false);
+  const [selectedPostId, setSelectedPostId] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,6 +51,9 @@ const OtherProfile = () => {
       return authorId === id;
     });
   }, [id, posts]);
+
+  const selectedPost =
+    userPosts.find((post) => post._id === selectedPostId) || null;
 
   const isFollowing = useMemo(() => {
     return currentUser?.following?.some((item) => {
@@ -176,7 +181,11 @@ const OtherProfile = () => {
       <div className={styles.grid}>
         {userPosts.length > 0 ? (
           userPosts.map((post) => (
-            <div key={post._id} className={styles.post}>
+            <div
+              key={post._id}
+              className={styles.post}
+              onClick={() => setSelectedPostId(post._id)}
+            >
               <img
                 src={getImageUrl(post.image)}
                 alt="post"
@@ -187,6 +196,21 @@ const OtherProfile = () => {
           <div className={styles.emptyPosts}>This user has no posts yet.</div>
         )}
       </div>
+
+      {selectedPost && (
+        <PostDetailModal
+          post={selectedPost}
+          currentUser={currentUser}
+          onClose={() => setSelectedPostId(null)}
+          onLike={async (postId) => {
+            await API.post(`/api/likes/${postId}`);
+            const postsRes = await API.get("/api/posts");
+            setPosts(postsRes.data || []);
+            window.dispatchEvent(new Event("notifications-changed"));
+            window.dispatchEvent(new Event("posts-changed"));
+          }}
+        />
+      )}
     </div>
   );
 };

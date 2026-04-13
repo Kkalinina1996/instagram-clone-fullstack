@@ -102,21 +102,3 @@
 }
 
 /* DELETE BUTTON */
-.deleteBtn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: rgba(0,0,0,0.6);
-  color: white;
-  border: none;
-  padding: 5px 8px;
-  font-size: 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  opacity: 0;
-  transition: 0.2s;
-}
-
-.post:hover .deleteBtn {
-  opacity: 1;
-}
