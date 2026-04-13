@@ -160,7 +160,7 @@ const Notifications = () => {
 
   return (
     <section className={styles.wrapper}>
-      <p className={styles.pageLabel}>Main - notification</p>
+      
 
       <div className={styles.stage}>
         <aside className={styles.panel}>

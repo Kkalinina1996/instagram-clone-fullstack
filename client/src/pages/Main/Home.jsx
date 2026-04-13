@@ -247,7 +247,7 @@ const Home = () => {
 
   return (
     <section className={styles.page}>
-      <p className={styles.pageLabel}>Main</p>
+      
 
       {posts.length > 0 ? (
         <>

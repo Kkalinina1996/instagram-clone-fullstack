@@ -178,7 +178,7 @@ const SearchPage = () => {
       <div className={styles.stage}>
         <aside className={styles.panel}>
           <div className={styles.panelHeader}>
-            <h2 className={styles.title}>Search</h2>
+            
             <button
               type="button"
               className={styles.closeButton}

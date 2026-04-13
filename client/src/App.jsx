@@ -16,6 +16,7 @@ import EditPostForm from "./pages/Create/editPostForm";
 import Notifications from "./pages/Notifications/notifications";
 import SearchPage from "./pages/Search/search";
 import Messages from "./pages/Messages/messages";
+import NotFound from "./pages/NotFound/notFound";
 
 // auth pages
 import Login from "./pages/Auth/Login";
@@ -114,6 +115,10 @@ function App() {
   path="/create"
   element={isAuth ? <Create /> : <Navigate to="/" replace />}
 />
+          <Route
+            path="*"
+            element={isAuth ? <NotFound /> : <Navigate to="/" replace />}
+          />
 
         </Route>
         
