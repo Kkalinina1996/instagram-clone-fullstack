@@ -115,6 +115,10 @@
   font-size: 18px;
 }
 
+.likedHeart {
+  color: #ed4956;
+}
+
 .likes,
 .caption,
 .comments {

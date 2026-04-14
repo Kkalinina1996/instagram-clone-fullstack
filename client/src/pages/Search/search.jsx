@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import API from "../../api/axios";
@@ -144,6 +145,15 @@ const SearchPage = () => {
       console.log("Like error:", error);
     }
   };
+
+  const isLikedByCurrentUser = (likes = []) =>
+    Array.isArray(likes)
+      ? likes.some((like) => {
+          if (!currentUser?._id) return false;
+          if (typeof like === "string") return like === currentUser._id;
+          return like?._id === currentUser._id || like?.toString?.() === currentUser._id;
+        })
+      : false;
 
   const recentUsers = useMemo(() => {
     const uniqueUsers = [];
@@ -295,7 +305,11 @@ const SearchPage = () => {
                             handleToggleLike(post._id);
                           }}
                         >
-                          <FavoriteBorderIcon />
+                          {isLikedByCurrentUser(post.likes) ? (
+                            <FavoriteIcon className={homeStyles.likedHeart} />
+                          ) : (
+                            <FavoriteBorderIcon />
+                          )}
                         </button>
                         <button
                           type="button"

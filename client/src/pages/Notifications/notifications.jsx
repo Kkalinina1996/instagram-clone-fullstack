@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import CloseIcon from "@mui/icons-material/Close";
@@ -155,6 +156,15 @@ const Notifications = () => {
     }
   };
 
+  const isLikedByCurrentUser = (likes = []) =>
+    Array.isArray(likes)
+      ? likes.some((like) => {
+          if (!currentUser?._id) return false;
+          if (typeof like === "string") return like === currentUser._id;
+          return like?._id === currentUser._id || like?.toString?.() === currentUser._id;
+        })
+      : false;
+
   const selectedPost =
     posts.find((post) => post._id === selectedPostId) || null;
 
@@ -282,7 +292,11 @@ const Notifications = () => {
                             handleToggleLike(post._id);
                           }}
                         >
-                          <FavoriteBorderIcon />
+                          {isLikedByCurrentUser(post.likes) ? (
+                            <FavoriteIcon className={homeStyles.likedHeart} />
+                          ) : (
+                            <FavoriteBorderIcon />
+                          )}
                         </button>
                         <button
                           type="button"

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import API from "../../api/axios";
@@ -147,6 +148,15 @@ const Home = () => {
       console.log("Like error:", error);
     }
   };
+
+  const isLikedByCurrentUser = (likes = []) =>
+    Array.isArray(likes)
+      ? likes.some((like) => {
+          if (!currentUser?._id) return false;
+          if (typeof like === "string") return like === currentUser._id;
+          return like?._id === currentUser._id || like?.toString?.() === currentUser._id;
+        })
+      : false;
 
   const handleCommentChange = (postId, value) => {
     setCommentText((current) => ({
@@ -301,7 +311,11 @@ const Home = () => {
                         handleToggleLike(post._id);
                       }}
                     >
-                      <FavoriteBorderIcon />
+                      {isLikedByCurrentUser(post.likes) ? (
+                        <FavoriteIcon className={styles.likedHeart} />
+                      ) : (
+                        <FavoriteBorderIcon />
+                      )}
                     </button>
                     <button
                       type="button"

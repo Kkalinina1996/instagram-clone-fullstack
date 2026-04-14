@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
+import { io } from "socket.io-client";
 import API from "../../api/axios";
 import styles from "./messages.module.css";
 
@@ -27,6 +28,9 @@ const Messages = () => {
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [sendLoading, setSendLoading] = useState(false);
+  const socketRef = useRef(null);
+  const userIdRef = useRef(null);
+  const activeChatRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,6 +73,58 @@ const Messages = () => {
   }, [activeChatId, chats]);
 
   useEffect(() => {
+    userIdRef.current = user?._id || null;
+  }, [user?._id]);
+
+  useEffect(() => {
+    activeChatRef.current = activeChatId || null;
+  }, [activeChatId]);
+
+  useEffect(() => {
+    if (!user?._id) return;
+
+    const socket = io(API_BASE, {
+      auth: { userId: user._id },
+      transports: ["websocket"],
+    });
+
+    socketRef.current = socket;
+
+    socket.on("new-message", (incomingMessage) => {
+      const senderId =
+        typeof incomingMessage.sender === "object"
+          ? incomingMessage.sender?._id
+          : incomingMessage.sender;
+      const receiverId =
+        typeof incomingMessage.receiver === "object"
+          ? incomingMessage.receiver?._id
+          : incomingMessage.receiver;
+      const currentUserId = userIdRef.current;
+      const currentChatId = activeChatRef.current;
+
+      if (!currentUserId || !currentChatId) return;
+
+      const belongsToOpenChat =
+        (senderId === currentChatId && receiverId === currentUserId) ||
+        (senderId === currentUserId && receiverId === currentChatId);
+
+      if (!belongsToOpenChat) return;
+
+      setMessages((current) => {
+        const exists = current.some((msg) => msg._id === incomingMessage._id);
+        if (exists) return current;
+        return [...current, incomingMessage];
+      });
+    });
+
+    return () => {
+      socket.off("new-message");
+      socket.disconnect();
+      socketRef.current = null;
+    };
+  }, [user?._id]);
+
+  useEffect(() => {
     if (!activeChatId) return;
 
     const fetchConversation = async () => {
@@ -81,12 +137,6 @@ const Messages = () => {
     };
 
     fetchConversation();
-
-    const intervalId = window.setInterval(fetchConversation, 4000);
-
-    return () => {
-      window.clearInterval(intervalId);
-    };
   }, [activeChatId]);
 
   const activeChat = chats.find((chat) => chat._id === activeChatId) || null;
