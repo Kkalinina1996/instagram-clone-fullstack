@@ -22,6 +22,15 @@ export const toggleLike = async (req, res) => {
       );
     } else {
       post.likes.push(userId);
+
+      if (post.author.toString() !== userId) {
+        await Notification.create({
+          recipient: post.author,
+          sender: userId,
+          type: "like",
+          post: post._id,
+        });
+      }
     }
 
     await post.save();
@@ -35,4 +44,3 @@ export const toggleLike = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-

@@ -1,4 +1,6 @@
 import Comment from "../models/Comment.js";
+import Notification from "../models/Notification.js";
+import Post from "../models/Post.js";
 
 
 // ➕ создать комментарий
@@ -17,6 +19,17 @@ export const addComment = async (req, res) => {
       user: req.user.userId,
       text
     });
+
+    const post = await Post.findById(postId);
+
+    if (post && post.author.toString() !== req.user.userId) {
+      await Notification.create({
+        recipient: post.author,
+        sender: req.user.userId,
+        type: "comment",
+        post: postId,
+      });
+    }
 
     res.status(201).json(comment);
 
